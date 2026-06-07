@@ -1,5 +1,9 @@
 # Chaves de API — nunca commitar
 .env
+langchain/config.yaml
+
+# Jupyter
+.ipynb_checkpoints/
 
 # Python
 __pycache__/
