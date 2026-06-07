@@ -1,0 +1,12 @@
+# Chaves de API — nunca commitar
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
