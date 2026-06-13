@@ -31,26 +31,30 @@ conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/ms
 ## 4. Criar e ativar o ambiente do curso
 
 ```powershell
-conda create -n langchain python=3.12 -y
+conda create -n langchain python=3.11 -y
 conda activate langchain
 ```
 
 > O nome do ambiente é `langchain`. Sempre ative-o antes de rodar os scripts do curso.
 
+> ⚠️ **Use Python 3.11** (não o 3.13 do `base`). As versões fixadas no `requirements.txt` são de meados de 2024 e **não têm wheel** para o Python 3.13 — pacotes como `PyMuPDF==1.24.7`, `numpy==1.26.4` e `scikit-learn==1.5.1` tentariam compilar do código-fonte e falhariam com `Unable to find Visual Studio`. No Python 3.11 todos instalam por wheel pré-compilado, sem precisar de compilador C/C++.
+
 ## 5. Instalar os pacotes
 
-Com o ambiente `langchain` ativado:
+Com o ambiente `langchain` ativado, instale a partir do `requirements.txt` (versões fixadas e testadas do curso):
 
 ```powershell
-pip install langchain langchain-openai langchain-pinecone python-dotenv
+conda activate langchain
+pip install -r "C:\Projetos\poc-langchain-angular\langchain\requirements.txt"
 ```
 
-| Pacote | Para quê |
-|---|---|
-| `langchain` | Framework principal (inclui `langchain-core`) |
-| `langchain-openai` | Integração com os modelos da OpenAI |
-| `langchain-pinecone` | Integração com o vector store Pinecone (inclui o SDK `pinecone`) |
-| `python-dotenv` | Carrega as chaves de API do arquivo `.env` |
+> Esse arquivo já inclui tudo: `langchain`, `langchain-openai`, `langchain-google-genai`, `pinecone-client`, `PyMuPDF`, `streamlit`, `langgraph`, etc.
+
+Para instalar sem ativar o ambiente (a partir de qualquer terminal):
+
+```powershell
+conda run -n langchain pip install -r "C:\Projetos\poc-langchain-angular\langchain\requirements.txt"
+```
 
 ## 6. Configurar as chaves de API
 
@@ -79,8 +83,10 @@ load_dotenv()
 
 ```powershell
 conda activate langchain
-python -c "import langchain, langchain_openai, langchain_pinecone; print('LangChain', langchain.__version__, 'OK')"
+python -c "import langchain, langchain_openai, pinecone, fitz; print('LangChain', langchain.__version__, 'OK')"
 ```
+
+> `fitz` é o módulo do `PyMuPDF` — se ele importar, a parte que costuma dar problema no Windows está OK.
 
 ## 8. JupyterLab
 
@@ -123,6 +129,29 @@ As preferências globais ficam em `C:\Users\Administrador\.jupyter\jupyter_serve
 - **Sem senha fixa**: não há `hashed_password` configurado, então a autenticação volta ao padrão por **token** (a URL com `?token=...` aparece no terminal). Se quiser definir uma senha, rode `jupyter lab password`.
 
 > O `--notebook-dir` na linha de comando tem prioridade sobre o `root_dir` do config. Por isso o comando da porta 8889 acima ainda abre direto em `poc-langchain-angular` quando você quiser focar neste subprojeto.
+
+### Kernel do ambiente `langchain` (importante)
+
+O JupyterLab roda no Python do `base` (3.13) por padrão — onde os pacotes do curso **não** estão instalados. É preciso registrar o ambiente `langchain` como um *kernel* e selecioná-lo nos notebooks.
+
+Registre o kernel uma única vez (já feito nesta máquina):
+
+```powershell
+conda run -n langchain python -m ipykernel install --user --name langchain --display-name "Python (langchain)"
+```
+
+Depois, **reinicie o JupyterLab** e, em cada notebook, selecione o kernel **"Python (langchain)"**:
+
+- No notebook aberto: canto superior direito → clique no nome do kernel → escolha **Python (langchain)**.
+- Ou pelo menu **Kernel → Change Kernel… → Python (langchain)**.
+
+> Como as bibliotecas já estão instaladas nesse ambiente, **não é preciso rodar** a célula `pip install -r requirements.txt` do `Install.ipynb`. Se rodar com o kernel correto, ela apenas informará que tudo já está satisfeito.
+
+Para conferir os kernels registrados:
+
+```powershell
+jupyter kernelspec list
+```
 
 ## 9. Anaconda Navigator
 
