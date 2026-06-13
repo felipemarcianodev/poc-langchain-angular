@@ -2,6 +2,17 @@
 
 Passo a passo para configurar o ambiente do zero em uma máquina nova (Windows).
 
+## 📚 Documentação de estudo
+
+Quer **entender** as ferramentas (não só seguir os comandos)? Veja a pasta [`docs/`](docs/README.md):
+
+- 📄 [01 — Anaconda e conda](docs/01-anaconda-e-conda.md) — o que é o Anaconda, `conda` vs `pip`, ambientes isolados
+- 📄 [02 — JupyterLab e notebooks](docs/02-jupyterlab.md) — células, kernels e a causa de erro mais comum
+- 📄 [03 — Ambientes virtuais e kernels](docs/03-ambientes-virtuais.md) — isolamento, `ipykernel` e o fluxo completo
+- 📄 [04 — Resolução de problemas](docs/04-troubleshooting.md) — casos reais (PyMuPDF, kernel errado, senha do Jupyter)
+
+> Os documentos usam diagramas **Mermaid**, renderizados nativamente pelo GitHub.
+
 ## 1. Instalar o Anaconda
 
 ```powershell
