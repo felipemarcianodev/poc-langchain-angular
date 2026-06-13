@@ -4,6 +4,7 @@ langchain/config.yaml
 
 # Jupyter
 .ipynb_checkpoints/
+.virtual_documents/
 
 # Python
 __pycache__/
